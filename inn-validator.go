@@ -36,7 +36,7 @@ func IsLegalPersonInnValid(inn string) (isValid bool, err error) {
 // intStringToIntArray("42") // => {4, 2}
 func intStringToIntArray(inputString string) (array []int, err error) {
   if inputString == "" {
-    return []int{}, fmt.Errorf("%s is not int", inputString)
+    return []int{}, fmt.Errorf("%s is empty", inputString)
   }
 
   for _, value := range inputString {
