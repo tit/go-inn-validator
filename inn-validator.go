@@ -2,21 +2,22 @@ package innValidator
 
 import (
   "fmt"
+  "regexp"
   "strconv"
 )
 
 var (
-// innLegalPersonRegexp   = regexp.MustCompile("^[0-9]{10}$")
-// innPrivatePersonRegexp = regexp.MustCompile("^[0-9]{12}$")
+  innLegalPersonRegexp = regexp.MustCompile("^[0-9]{10}$")
+  // innPrivatePersonRegexp = regexp.MustCompile("^[0-9]{12}$")
 )
 
-// func IsLegalPersonInnValid(inn string) (isValid bool, err error) {
-//   if !innLegalPersonRegexp.MatchString(inn) {
-//     return false, fmt.Errorf("%s is not legal person inn", inn)
-//   }
-//
-//   return
-// }
+func IsLegalPersonInnValid(inn string) (isValid bool, err error) {
+  if !innLegalPersonRegexp.MatchString(inn) {
+    return false, fmt.Errorf("%s is not legal person inn", inn)
+  }
+
+  return true, err
+}
 
 // func legalPerson(inn string) (valid bool, err error) {
 //   weights := []int{2, 4, 10, 3, 5, 9, 4, 6, 8}
@@ -34,6 +35,10 @@ var (
 // convert string to slice int
 // intStringToIntArray("42") // => {4, 2}
 func intStringToIntArray(inputString string) (array []int, err error) {
+  if inputString == "" {
+    return []int{}, fmt.Errorf("%s is not int", inputString)
+  }
+
   for _, value := range inputString {
     char := string(value)
 

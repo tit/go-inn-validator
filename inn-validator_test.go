@@ -9,8 +9,10 @@ var intStringToIntArrayFixtures = []struct {
   array  []int
   error  bool
 }{
-  {string: "0", array: []int{0}, error: true},
+  {string: "0", array: []int{0}, error: false},
   {string: "01", array: []int{0, 1}, error: false},
+
+  {string: "-1", array: []int{}, error: true},
   {string: "", array: []int{}, error: true},
   {string: "foo", array: []int{}, error: true},
   {string: "foo42", array: []int{}, error: true},
@@ -19,11 +21,21 @@ var intStringToIntArrayFixtures = []struct {
 
 func Test_intStringToIntArray(t *testing.T) {
   for _, value := range intStringToIntArrayFixtures {
-    array, _ := intStringToIntArray(value.string)
+    array, err := intStringToIntArray(value.string)
+    if (err != nil && !value.error) || (err == nil && value.error) {
+      t.Errorf("Huston, we have problem %s %t", err, value.error)
+    }
 
     if !isSliceEqual(array, value.array) {
       t.Errorf("Huston, we have problem")
     }
+  }
+}
+
+func TestIsLegalPersonInnValid(t *testing.T) {
+  isLegalPersonInnValid, _ := IsLegalPersonInnValid("1234567890")
+  if !isLegalPersonInnValid {
+    t.Errorf("Huston, we have problem")
   }
 }
 
