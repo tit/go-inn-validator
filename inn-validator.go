@@ -6,34 +6,30 @@ import (
   "strconv"
 )
 
-var (
-  innLegalPersonRegexp = regexp.MustCompile("^[0-9]{10}$")
-  // innPrivatePersonRegexp = regexp.MustCompile("^[0-9]{12}$")
-)
-
 func IsLegalPersonInnValid(inn string) (isValid bool, err error) {
-  if !innLegalPersonRegexp.MatchString(inn) {
+  weights := [9]int{2, 4, 10, 3, 5, 9, 4, 6, 8}
+
+  if !regexp.MustCompile("^[0-9]{10}$").MatchString(inn) {
     return false, fmt.Errorf("%s is not legal person inn", inn)
   }
 
-  return true, err
+  array, err := intStringToIntArray(inn)
+  if err != nil {
+    return false, fmt.Errorf("%s is not legal person inn", inn)
+  }
+
+  var result int
+  for index, weight := range weights {
+    result += array[index] * weight
+  }
+
+  if (result%11)%10 == array[9] {
+    return true, err
+  } else {
+    return false, fmt.Errorf("%s is not legal person inn", inn)
+  }
 }
 
-// func legalPerson(inn string) (valid bool, err error) {
-//   weights := []int{2, 4, 10, 3, 5, 9, 4, 6, 8}
-//   var r = 0
-//   for index, value := range weights {
-//     i, _ := strconv.Atoi(string(inn[index]))
-//     r += i * value
-//
-//   }
-//   i, _ := strconv.Atoi(string(inn[9]))
-//   valid = r%11%10 == i
-//   return
-// }
-
-// convert string to slice int
-// intStringToIntArray("42") // => {4, 2}
 func intStringToIntArray(inputString string) (array []int, err error) {
   if inputString == "" {
     return []int{}, fmt.Errorf("%s is empty", inputString)
