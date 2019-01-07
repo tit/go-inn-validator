@@ -50,6 +50,8 @@ func TestIsLegalPersonInnValid(t *testing.T) {
   }{
     {name: "valid inn", args: args{"7802565953"}, wantIsValid: true, wantErr: false},
     {name: "invalid inn", args: args{"1234567890"}, wantIsValid: false, wantErr: true},
+    {name: "less count digits", args: args{"780256595"}, wantIsValid: false, wantErr: true},
+    {name: "more count digits", args: args{"78025659530"}, wantIsValid: false, wantErr: true},
     {name: "text", args: args{"foo"}, wantIsValid: false, wantErr: true},
     {name: "mix lead valid inn text", args: args{"7802565953foo"}, wantIsValid: false, wantErr: true},
   }
@@ -79,6 +81,8 @@ func TestIsPrivatePersonInnValid(t *testing.T) {
   }{
     {name: "valid inn", args: args{"614309291796"}, wantIsValid: true, wantErr: false},
     {name: "invalid inn", args: args{"614309291790"}, wantIsValid: false, wantErr: true},
+    {name: "less count digits", args: args{"61430929179"}, wantIsValid: false, wantErr: true},
+    {name: "more count digits", args: args{"6143092917960"}, wantIsValid: false, wantErr: true},
     {name: "text", args: args{"foo"}, wantIsValid: false, wantErr: true},
     {name: "mix lead valid inn text", args: args{"614309291796foo"}, wantIsValid: false, wantErr: true},
   }
