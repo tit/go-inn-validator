@@ -50,6 +50,8 @@ func TestIsLegalPersonInnValid(t *testing.T) {
   }{
     {name: "valid inn", args: args{"7802565953"}, wantIsValid: true, wantErr: false},
     {name: "invalid inn", args: args{"1234567890"}, wantIsValid: false, wantErr: true},
+    {name: "text", args: args{"foo"}, wantIsValid: false, wantErr: true},
+    {name: "mix lead valid inn text", args: args{"7802565953foo"}, wantIsValid: false, wantErr: true},
   }
   for _, tt := range tests {
     t.Run(tt.name, func(t *testing.T) {
@@ -60,6 +62,35 @@ func TestIsLegalPersonInnValid(t *testing.T) {
       }
       if gotIsValid != tt.wantIsValid {
         t.Errorf("IsLegalPersonInnValid() = %v, want %v", gotIsValid, tt.wantIsValid)
+      }
+    })
+  }
+}
+
+func TestIsPrivatePersonInnValid(t *testing.T) {
+  type args struct {
+    inn string
+  }
+  tests := []struct {
+    name        string
+    args        args
+    wantIsValid bool
+    wantErr     bool
+  }{
+    {name: "valid inn", args: args{"614309291796"}, wantIsValid: true, wantErr: false},
+    {name: "invalid inn", args: args{"614309291790"}, wantIsValid: false, wantErr: true},
+    {name: "text", args: args{"foo"}, wantIsValid: false, wantErr: true},
+    {name: "mix lead valid inn text", args: args{"614309291796foo"}, wantIsValid: false, wantErr: true},
+  }
+  for _, tt := range tests {
+    t.Run(tt.name, func(t *testing.T) {
+      gotIsValid, err := IsPrivatePersonInnValid(tt.args.inn)
+      if (err != nil) != tt.wantErr {
+        t.Errorf("IsPrivatePersonInnValid() error = %v, wantErr %v", err, tt.wantErr)
+        return
+      }
+      if gotIsValid != tt.wantIsValid {
+        t.Errorf("IsPrivatePersonInnValid() = %v, want %v", gotIsValid, tt.wantIsValid)
       }
     })
   }

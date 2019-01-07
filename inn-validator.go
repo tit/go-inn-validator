@@ -23,11 +23,45 @@ func IsLegalPersonInnValid(inn string) (isValid bool, err error) {
     result += array[index] * weight
   }
 
-  if (result%11)%10 == array[9] {
+  if result%11%10 == array[9] {
     return true, err
   } else {
     return false, fmt.Errorf("%s is not legal person inn", inn)
   }
+}
+
+func IsPrivatePersonInnValid(inn string) (isValid bool, err error) {
+  var weights1 = [10]int{7, 2, 4, 10, 3, 5, 9, 4, 6, 8}
+  var weights2 = [11]int{3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8}
+
+  if !regexp.MustCompile("^[0-9]{12}$").MatchString(inn) {
+    return false, fmt.Errorf("%s is not legal person inn", inn)
+  }
+
+  array, err := intStringToIntArray(inn)
+  if err != nil {
+    return false, fmt.Errorf("%s is not legal person inn", inn)
+  }
+
+  var result int
+  for index, weight := range weights1 {
+    result += array[index] * weight
+  }
+
+  if result%11%10 != array[10] {
+    return false, fmt.Errorf("%s is not legal person inn", inn)
+  }
+
+  result = 0
+  for index, weight := range weights2 {
+    result += array[index] * weight
+  }
+
+  if result%11%10 != array[11] {
+    return false, fmt.Errorf("%s is not legal person inn", inn)
+  }
+
+  return true, err
 }
 
 func intStringToIntArray(inputString string) (array []int, err error) {
