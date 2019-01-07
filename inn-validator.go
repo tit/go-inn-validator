@@ -22,8 +22,10 @@ func IsLegalPersonInnValid(inn string) (isValid bool, err error) {
   for index, weight := range weights {
     result += array[index] * weight
   }
+  checksum := result % 11 % 10
+  arrayLastElement := array[len(array)-1]
 
-  if result%11%10 == array[9] {
+  if checksum == arrayLastElement {
     return true, err
   } else {
     return false, fmt.Errorf("%s is not legal person inn", inn)
@@ -48,7 +50,8 @@ func IsPrivatePersonInnValid(inn string) (isValid bool, err error) {
     result += array[index] * weight
   }
 
-  if result%11%10 != array[10] {
+  checksum := result % 11 % 10
+  if checksum != array[10] {
     return false, fmt.Errorf("%s is not legal person inn", inn)
   }
 
@@ -57,7 +60,8 @@ func IsPrivatePersonInnValid(inn string) (isValid bool, err error) {
     result += array[index] * weight
   }
 
-  if result%11%10 != array[11] {
+  checksum = result % 11 % 10
+  if checksum != array[11] {
     return false, fmt.Errorf("%s is not legal person inn", inn)
   }
 
