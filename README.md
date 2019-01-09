@@ -1,4 +1,6 @@
-# go-inn-validator
+[![GoDoc](https://godoc.org/github.com/ttacon/libphonenumber?status.png)](https://godoc.org/github.com/tit/go-inn-validator)
+
+# innValidator
 Валидатор ИНН физических и юридических лиц
 
 ## Установка
